@@ -1,0 +1,731 @@
+\documentclass[abstracton, paper=a4, fontsize=11pt,DIV=12,bibliography=totoc]{scrartcl}
+
+
+
+\pdfoutput=1
+
+\input{header.tex}
+
+\title{Mean field Transient Stokes}
+\author{HMS}
+\date{April 2026}
+
+
+
+\begin{document}
+
+\maketitle
+
+\section{TO DO}
+
+\begin{itemize}
+    \item Self interaction
+    \item $\tilde u$ defined with rhs $\delta_{B_i}$ vs $\delta_{\partial B_i}$
+    \item Method of reflections
+    \begin{itemize}
+        \item Semigroup approach
+        \item Gradient flow approach
+        \item Use H\"older regularity? 
+        \item Check the $C^0$  mapping properties in the Jabin-Otto paper
+        \item treat whole problem as steady Stokes with rhs
+        \item Treat full Oseen problem: Fundamental solution just given by $G(t,x-X(t))$?
+    \end{itemize}
+    \item 2D NS
+\end{itemize}
+
+\section{Introduction}
+
+Let $B_i=B_i(t) = B(X_i(t),R)$ be $N$ sufficiently separated particles. We call $\Omega_t=\R^3\setminus \bigcup_i B_i$. We are interested in the mean-field behaviour of the transient-Stokes-particle system.
+\begin{align*}
+    \partial_t u-\Delta u+\nabla p=0,\quad  \dv u=0 &\quad \text{in } \Omega_t\\
+    u(t,\cdot)=V_i(t)&\quad \text{ in } B_i\\
+    u(0, \cdot)=u_0, &\quad \text{ in } \R^3 \\
+    F_i :=\int_{\partial B_i} \sigma n \dd S=\frac gN & \quad \text{ for all } 1 \leq i \leq N \\
+    \dot{X_i}=V_i& \quad \text{ for all } 1 \leq i \leq N 
+\end{align*}
+Here, the velocities $V_i$ are unkowns as in the quasi-stationary case. 
+The system is probably quite unphysical by disregarding the nonlinear transport term in the Navier-Stokes equation while retaining the time derivative. However, we hope to gain some insights into the full problem. 
+
+There is a compatibility condition on $u_0$, which is, that it should be constant on the particles. Whether or not the force equation needs to be satisfied is doubtful, but probably not, since the forces are (a priori) not continuous in time. 
+At some point we should check what changes in $d=2$ since the fudamental solution seems ok, but maybe, since its time-integrated version is still logarithmic, the Stokes paradox remains.
+We expect the mean-field limit to be 
+\begin{align*}
+    \partial_t \rho+(u+V_s)\cdot\nabla\rho&=0,\\
+    \partial_t u-\Delta u+\nabla p&=\rho g,
+\end{align*}
+where $V_s$ is the traveling wave velocity of the transient Stokes equation with one particle (under gravity). Actually we expect $V_s$ to be the same as in the stationary Stokes problem, as the self-interaction of the rescaled one particle solution concentrates more and more in the present time, while the integral of the fundamental solution integrates to give the Oseen tensor.
+\section{Strategy}
+
+\section{Energy estimate and well-posedness}
+
+We start by testing the equation with a space-time testfunction $\varphi$, compactly supported on $[0,\infty)\times \R^3$, and constant on the particles ($\varphi(t,\cdot)\equiv w_i(t)$ on $B_i(t)$). Integrating by parts we obtain
+\begin{align*}
+     -\int_0^\infty \int_{\Omega_t} \partial_t \varphi \cdot  u\dd x \dd t-\sum_i \int_0^\infty  \int_{\partial B_i(t)}(w_i\cdot V_i)V_i\cdot n \dd S \dd t +\int_0^\infty  \int_{\Omega_t} \nabla\varphi\colon\nabla u\dd x&+\int_0^\infty \sum_i F_i\cdot w_i(t) \dd t \\
+     &= \int_{\Omega_0} \varphi(0) \cdot u_0.
+\end{align*}
+The nonlinear boundary term is zero as $w_i\cdot V_i$ is constant and $V_i\cdot n$ integrates to zero over a ball. This should still vanish if it is not a ball for translational velocities, and we can add rotations to the testfunctions in the case of balls since
+\begin{align*}
+    \int_{\partial B}(Ax\cdot V)V\cdot n\dd S=\int_B V\cdot \nabla(Ax\cdot V)\dd S=\int_B AV\cdot V \dd S=0
+\end{align*}
+for a skewsymmteric $A$. But adding rotations to the particles should lead to some non-vanishing terms. Note that this problem does not affect the energy relation, though. The issue rather seems to get a suitable weak formulation of the problem that allows to prove existence of solutions.
+
+Using $\varphi=u$ as a test funtion we obtain the energy relation
+\begin{align*}
+    \frac 12\frac{\d}{\d t} \int_{\R^3} \abs{u(t)}^2\dd x+\int_{\R^3} \abs{\nabla u}^2\dd x+\sum_i F_i \cdot V_i=0.
+\end{align*}
+
+We want to estimate the last term (linear in $u$), absorb the $u$ dependence and show (at most) linear growth of the energy. We can do this by using the trace following estimate 
+\begin{align*}
+    \frac{1}{R^2 N}\norm{u}_{L^2(\partial \Omega)}^2\le C \norm{u}^2_{L^2(\Omega)} + \frac{C}{NR} \norm{\nabla u}_{L^2(\Omega)}^2
+\end{align*}
+This is shown in  \cite[Lemma 2.3]{Allaire_slip} for periodic distributions. At least under the separation assumption $\dmin \gtrsim N^{-1/3}$ it generaizes to our setting.
+
+Then, assuming $NR \gtrsim 1$ (which is the interesting regime)
+\begin{align*}
+    \sum_i F_i\cdot V_i &=\sum_i \fint_{\partial B_i}uF_i\\
+    &\le \bra{\sum_i (\fint_{\partial B_i} u)^2}^{1/2}\bra{\sum_i F_i^2}^{1/2}\\
+    &\le \bra{\sum_i \fint_{\partial B_i} u^2}^{1/2}N^{-1/2}\\
+    &\le \abs{\partial B_i}^{-1/2}\norm{u}_{L^2(\partial\Omega)}N^{-1/2}\\
+    &\le C + \frac 1 2 \left(\norm{ u}^2_{L^2} + \norm{\nabla u}_{L^2}\right)
+\end{align*}
+
+Based on this energy estimate it should be possible to establish well-posedness (under the assumption that the particles stay well-separated) by transforming the equation back to a time-independent domain and using a Galerkin approximation.
+
+\section{The fundamental solution}
+
+We are interested in the fundamental solution of the transient Stokes equation
+\begin{align*}
+    \partial_t G-\Delta G+\nabla P=\delta_{0,0}\Id, \quad \dv G=0.
+\end{align*}
+We use the Helmholtz projection $P$, given by the Fourier symbol $\Id-\frac{k\otimes k}{\abs{k}^2}$. As $G$ is already solenoidal, it is not affected by the projection. Therefore we look for
+\begin{align*}
+    \partial_t G-\Delta G=P\delta_{0,0}\Id, \quad  \dv G=0.
+\end{align*}
+The heat-kernel $H$ solves the above equation without the projection, whence (everything is linear) it should hold that $G=P(H\Id)$. This implies on the Fourier level
+\begin{align*}
+    \hat G=(\Id-\frac{k\otimes k}{\abs{k}^2})e^{-\abs{k}^2t}.
+\end{align*}
+Using that $k$ is the symbol of the derivative while $\frac{1}{\abs{k}^2}=\F((-\Delta)^{-1})$, we get
+\begin{align*}
+    G=H\Id+D^2(\Phi\ast H),
+\end{align*}
+where $\Phi$ is the fundamental solution of the Laplace equation.
+
+The Newton potential of the heat-kernel is given by 
+\begin{align*}
+    (\Phi\ast H(t,\cdot))(x)=\frac{1}{4\pi\abs{x}}\Err(\frac{\abs{x}}{\sqrt{4t}}),
+\end{align*}
+where the error function satisfies $\Err(t)= \frac{2}{\sqrt \pi} \int_0^t e^{-s^2}\dd s$. 
+Indeed, let $v = \Phi\ast H(t,\cdot)$, then
+\begin{align*}
+   -\Delta v(t,x) =   H(t,\cdot) = \int_0^\infty \partial_s H(t +s,x) \dd s = \int_0^\infty - \Delta H(t +s,x) \dd s 
+\end{align*}
+Hence, we get
+\begin{align*}
+   v(t,x) =   \int_0^\infty  H(t +s,x) \dd s = \int_0^\infty \frac{\exp\left(-\frac {|x|^2}{4(t+s)}\right)}{(4 \pi (t+s))^{\frac 32} } \dd s =  \frac{1}{2 \pi^{3/2} |x|} \int_0^{\frac{|x|}{2 \sqrt t}} e^{-r^2}\dd r = \frac{1}{4\pi\abs{x}}\Err(\frac{\abs{x}}{\sqrt{4t}})
+\end{align*}
+through the substitution $r = \frac {|x|}{2 \sqrt{t+s}}$
+
+$G$ must be smooth, so all derivatives exist and the singularities of the terms must cancel. By taking derivatives we obtain 
+\begin{align*}
+    \nabla^i G(t,x)=\nabla^{2+i}(\frac{1}{4\pi\abs{x}})\Err(\frac{\abs{x}}{\sqrt{t}})+\abs{x}^{-3-i}p(\frac{\abs{x}^2}{t})e^{-\frac{\abs{x}^2}{4t}}.
+\end{align*}
+Here, $p$ is a polynomial. By distinguishing the cases $\abs{x}\le C\sqrt{t}$ and $\abs{x}\ge C\sqrt{t}$, we obtain the estimate
+\begin{align*}
+    \abs{\nabla^{i}G(t,x)}\ls \min\{t^{-(3+i)/2},\abs{x}^{-(3+i)}\}.
+\end{align*}
+In particular we can use the space-time integrable interpolation $\abs{\nabla G(x,t)}\le t^{-3/4}\abs{x}^{-5/2}$.
+More generally, we should get
+\begin{align} \label{G.est}
+    \abs{\nabla^{i} \partial_t^j G(t,x)}\ls \min\{t^{-(3+i +2j)/2},\abs{x}^{-(3+i+2j)}\}.
+\end{align}
+
+\section{Self-interaction}
+
+We expect 
+\begin{align*}
+    u(t,x)=(G(t,\cdot)\ast u_0)(x)+g\int_0^t\int_{\R^3}G(t-s,x-y)\bar \rho (y)\dd y\dd s
+\end{align*}
+with  $\bar{\rho}_N=\frac 1N \sum_i \delta_{ \partial B_i}$ to be a good approximation for $u$. 
+\rhcomment{I take here $\delta_{ \partial B_i}$ and not $\delta_{  B_i}$ because it should be the right object in view of the steady Stokes case. I think we need to resolve the issue with the integrability that we had with $\delta_{ \partial B_i}$.}
+
+
+As regards the self interaction we should compute 
+\begin{align*}
+    S := \int_0^t\int_{\R^3}G(t-s,X_i(t)-y) \delta_{\partial B_i(s)} \dd y\dd s = \frac 1N\int_0^t\fint_{ \partial B_i(s)}G(t-s,X_i(t)-x)\dd x\dd s.
+\end{align*}
+ Suppose first that the particle does not move, i.e. compute
+ \begin{align*}
+    \bar S :=\frac 1N\int_0^t\fint_{ \partial B_R(0)}G(s,x)\dd x\dd s.
+\end{align*}
+ and use the structure of the fundamental solution. 
+By rotational symmetry, we have $G(t,Ox) = O G(t,x) O^T$ for any $O \in SO(3)$ (because $\Delta (G(t,Ox)) = (\Delta G)(Ox)$, i.e. $\Delta$ commutes with rotations and hence, one can check, that $\tilde{G}:=O \Delta G(t,O^T x) O^T$  is again a fundamental solution). Thus, the matrix $S$ satisfies $O^T S O = A$ for all $O \in SO(3)$ and therefore $S = \frac 1 3 \Tr S \Id $. 
+Thus, it is sufficient to compute 
+    \begin{align*}
+    \Tr S& =\frac 1N\int_0^t\fint_{\partial B_R(0))} \Tr G(s,x)\dd x\dd s = \frac 2 { N} \int_0^t\fint_{\partial B_R(0))}   H(s,x)\dd x\dd s \\
+    &= \frac 2 { N} \int_0^t e^{-\frac{R^2}{4t}} (4 \pi s)^{-\frac 3 2} \dd s = \frac {1}{2 \pi N R} \frac{2}{\sqrt \pi} \int_{R/\sqrt{4 t}}^\infty  e^{- z^2}  \dd z = \frac {1}{2 \pi N R} (1 - \Err(R/\sqrt{4 t})) .
+\end{align*}
+
+Now we take the movement of the particle into account. 
+We assume $\sup_{s \in [0,T]} |V_i| \lesssim 1$ such that $|X_i(t) -X_i(s)| \leq R/2$ for $|t - s| \leq R^{-2}$. 
+Then, 
+\begin{align*}
+    |S - \bar S| &\leq \frac 1N\int_0^t\fint_{ \partial B_R(0)} |G(t-s, X_i(t) -X_i(s) -x) -G(s,-x )| \dd x\dd s \\
+    & \lesssim  \frac 1N\int_0^t\fint_{ \partial B_R(0)} |X_i(s) - X_i(t)| \sup_{|y| \geq  R - | X_i(t) -X_i(s)|} | \nabla G(t-s, y)|  \dd x\dd s \\
+    & \lesssim \frac 1N \int_0^{t-R^2} (t-s) (t-s)^{-2}  \dd s + \frac 1N \int_{t-R^2}^t (t-s) R^{-4}  \dd s \\
+    & \lesssim \frac 1 N (1 + |\log R|). 
+\end{align*}
+
+Hence, we conclude
+\begin{align*}
+    \left|S - \frac 1 {6 \pi N R} \Id\right| \lesssim  \frac {1}{NR} \Err(R/\sqrt{4 t}) + \frac 1 N (1 + |\log R|)
+\end{align*}
+
+
+
+
+\section{Estimate of the Wasserstein distance}
+
+For the moment we consider an approximated density $\bar{\rho}_N=\frac 1N \sum_i \delta_{B_i}$. Putting this on the RHS of the full-space transient Stokes equation produces a velocity field $\tilde u$. Actually we expect that it should be possible to take the deltas concentrated on the bounday but there was some divergence in the computation so we took balls. We consider an optimal transport plan at time zero, $\gamma_0$ and construct our typical plan $\gamma_t$ at time $t$ by pushing forward with the corresponding flows. We define 
+\begin{align*}
+    \eta(t)=\int \abs{x-y}^2 \dd \gamma(x,y)
+\end{align*}
+which controls the Wasserstein distance. Taking the time derivative we end up needing to control $\norm{u(x)-\tilde{u}(y)}^2_{L^2(\gamma_t(x,y))}$. We use the Duhamel formula
+\begin{align*}
+    u(t,x)=(G(t,\cdot)\ast u_0)(x)+g\int_0^t\int_{\R^3}G(t-s,x-y)\rho(y)\dd y\dd s
+\end{align*}
+and the same for $\tilde u$ and express $\rho_N=T_t\# \rho$ with the right transport map. Believing for the moment that the terms coming from the initial data $u_0$ should be the limit of the $u_{0}^N$, this leads to the expression 
+\begin{align*}
+    \int_{\R³}\abs{\int_0^t\int_{\R^3}(G(t-s,x-y)-G(t-s,T_tx-T_sy))\rho(y)\dd y\dd s}^2\rho(x)\dd x
+\end{align*}
+In principle we want to separate the self-interaction already before but for the moment we use the gradient estimate for $G$ and then a $1/2-1/2$ Hölder to obtain 
+\begin{align*}
+    \int_{\R³}\bra{\int_0^t \int_{\R^3}\abs{A}\rho(s,y)\dd y \dd s}\bra{\int_0^t\int_{\R^3}\abs{A}(\abs{T_tx-x}^2+\abs{T_sy-y}^2)\rho(s,y)\dd y \dd s}\rho(x)\dd x
+\end{align*}
+where $A$ is the estimate of the gradient of $G$. We want to pull out the first bracket in $L^{\infty}$. This integral will also appear when integrating first w.r.t. $x$ or $y$ in the second bracket, when the $\eta$ appears.
+
+This leads to the term
+\begin{align*}
+    &\sup_{x\in\supp \rho(t)} \int_0^t \int_{\R^3}\abs{A}\rho(s,y)\dd y \dd s\\ &\ls \sup_x \int_0^t \int_{\R^3}\frac{1}{\abs{t-s}^{3/4}}\frac{1}{\abs{x-y}^{5/2}}\rho(s,y)\dd y \dd s+\sup_x \int_0^t \int_{\R^3}\frac{1}{\abs{t-s}^{3/4}}\frac{1}{\abs{T_tx-T_sy}^{5/2}}\bar\rho(s,y)\dd y \dd s
+\end{align*}
+By integrability, the first term does not pose any problems. The second term should in principle be  treatable by the classical methods except for two difficulties: The self-interaction should have been taken care of before, and particle trajectories can cross the same point in space at different times. 
+
+
+\section{Method of reflections for transient Stokes}
+
+To make rigorous the approximation of $u$ by $\tilde u$, we could try the following adaptation of the method of reflections:
+
+Define $v_k$ inductively as follows: Set 
+\begin{align}
+    v_0 &= \tilde u, \\
+    v_{k+1} &= v_k - \sum Q_i v_k, \label{v_k+1}
+\end{align}
+where $Q_i$ is the solution operator to the following single particle  problem: $\tilde v :=Q w$ solves 
+\begin{align}
+    \partial_t \tilde v - \Delta\tilde v + \nabla p = 0, \quad \dv \tilde v = 0 & \qquad  \text{in }  \R^3 \setminus B_i(t), \\
+    \nabla (\tilde v - w) = 0  & \qquad  \text{in } B_i(t), \\
+    \int_{\partial B_i(t)} \sigma[\tilde v] n = 0, \\
+    \tilde v(0,\cdot) = 0 & \qquad  \text{in }  \R^3.
+\end{align}
+Here, we assume that $\tilde u$ already has the coorect initial condition $u_0$ which is constant in the particles.
+
+For this single particle problem, a simple change of coordinates yields the equivalent problem for $v(t,x) = \tilde v(t,x+X_i(t))$
+\begin{align}
+    \partial_t v - V_i(t) \cdot \nabla v -  \Delta v + \nabla p = 0, \quad \dv  v = 0 & \qquad  \text{in }[0,
+    T] \times  \R^3 \setminus B_R(0), \\
+    \nabla (v(t,\cdot) - w(t,X_i(t) + \cdot)) = 0   & \qquad  \text{in } [0,
+    T] \times B_R(0), \\
+    \int_{\partial B_R(0)} \sigma[ v] n = 0, \\
+        v(0,\cdot) = 0 & \qquad  \text{in }  \R^3.
+\end{align}
+Note that here $V_i$ is the true particle velocity, not the one induced by an approximation. In particular, even if $v_k \to u$, this does not seem to prove existence of the solution $u$, but we have to know it a priori. 
+
+Now we would like to show that $Q_i$ satisfies similar decay properties as in the steady case. 
+
+\paragraph{Recap of the steady case.}
+
+In the steady case, the problem is
+\begin{align}
+   -  \Delta v + \nabla p = 0, \quad \dv  v = 0 & \qquad  \text{in } \R^3 \setminus B_R(0), \\
+    \nabla (v - w) = 0   & \qquad  \text{in } B_R(0), \\
+    \int_{\partial B_R(0)} \sigma[ v] n = 0.
+\end{align}
+We can easily get an energy estimate by testing with $v-\bar w$, where $\bar w$ is any divergence free function such that $\nabla \bar w = \nabla w $ in $B_R$. Then, writing $\|\cdot\|_2$ short for $\|\cdot\|_{L^2(\R^3)}$,  
+\begin{align*}
+    \|\nabla v\|_2^2 = \int \nabla v \nabla \bar w \leq \|\nabla v\|_2 \|\nabla \bar w\|_2
+\end{align*}
+Here, we used $2 \int_{\R^3} D v : D_w = \int_{\R^3} \nabla v \cdot \nabla_w$ to avoid dealing with the symmetric gradient.
+
+By a good choice of $\bar w$
+\begin{align*}
+    \|\nabla v\|_2^2 \leq \|\nabla \bar w\|_2^2 \leq C \|\nabla w\|_{L^2(B_R)}^2.
+\end{align*}
+Next, we use $\Phi$, the fundamental solution of Stokes to start from the representation formula for $x \geq 2R$
+\begin{align*}
+    v(x) &= \int_{\partial B_R} \sigma[v]n \cdot \Phi(\cdot - x) - \int_{\partial B_R} \sigma[\Phi(\cdot - x)] n \cdot v \\
+   & = \int_{\partial B_R} \sigma[v]n \cdot \left(\Phi(\cdot - x) - \fint_{    B_R} \Phi(\cdot - x)\right) - \int_{B_R} D \Phi(\cdot - x) : D v \\
+    &= \int Dv \colon D \Psi - \int_{B_R} D \Phi(\cdot - x) : D w
+\end{align*}
+for any divergence free extension $\Psi$ of $\Phi(\cdot - x) - \fint_{    B_R} \Phi(\cdot - x)$. This yields
+\begin{align}
+    |v(x)| &\leq \|\nabla v\|_2 \|\nabla \Psi\|_2  + \|\nabla w\|_{L^2(B_R)} \|\nabla \Phi(\cdot - x)\|_{L^2(B_R)} \\
+    & \leq C \|\nabla w\|_{L^2(B_R)} \|\nabla \Phi(\cdot - x)\|_{L^2(B_R)} \\
+    & \leq \frac{R^{3/2}}{|x|^2} \|\nabla w\|_{L^2(B_R)}.
+\end{align}
+Analogously, we obtain
+\begin{align}
+    |\nabla^k v(x)| &\leq C_k  \frac{R^{3/2}}{|x|^{2+k}} \|\nabla w\|_{L^2(B_R)}
+\end{align}
+
+One can then iterate the estimates on $\|\nabla v_k\|_{L^\infty(\cup_i B_i)}$ in the method of reflections provided that $R^3 S_3$ is small. 
+
+\paragraph{Case of transient Stokes.}
+Let's ignore the first order \enquote{Oseen} term, and consider the problem 
+\begin{align}
+  \partial_t v  -  \Delta v + \nabla p = 0, \quad \dv  v = 0 & \qquad  \text{in } [0,
+    T] \times  \R^3 \setminus B_R(0), \\
+    \nabla (v - w) = 0   & \qquad  \text{in } [0,
+    T] \times  B_R(0), \\
+    \int_{\partial B_R(0)} \sigma[ v] n = 0, \\
+            v(0,\cdot) = 0 & \qquad  \text{in }  \R^3.
+\end{align}
+\rhcomment{Could we hope to deduce the estimates in the transient case directly from the steady case using some semigroup theory?}
+We first derive the corresponding energy estimate. We test again with $v-\bar w$, where $\bar w$ is any divergence free function such that $\nabla \bar w = \nabla w $ in $[0,t] \times  B_R$.
+Then, 
+\begin{align*}
+    \frac 1 2 \|v(t,\cdot)\|_{L^2( B_R^c)}^2  + \|\nabla  v\|_{L^2([0,t] \times \R^3)}^2 = \int_0^t \int_{B_R^c} \partial_t \bar w \cdot v \dd x \dd s- \int_{B_R^c} \bar w(t,\cdot)  \cdot v(t,\cdot) \dd x +  \int_0^t \int_{\R^3} \nabla v \nabla \bar w \dd x \dd s
+\end{align*}
+and hence by Gronwall (for an implicit constant depending on the fixed end time $T$)
+\begin{align}
+    \|v(t,\cdot)\|_{L^2(B_R^c)}^2  + \|\nabla  v\|_{L^2([0,t] \times \R^3)}^2 \lesssim \|\partial_t \bar w\|_{L^2([0,t]\times B_R^c)}^2 + \|\bar w(t,\cdot)\|_{L^2(B_R^c)}^2  + \|\nabla  \bar w\|_{L^2([0,t] \times \R^3)}^2
+\end{align}
+Choosing the extension $\bar w $ as above, using the linearity of the extension operator to see that it commutes with the time derivative and using the Poincar\'e inequality on the extension which is supported in $B_{2R}$ yields
+\begin{align} \label{v.est}
+        \|v(t,\cdot)\|_{L^2(B_R^c)}^2  + \|\nabla  v\|_{L^2([0,t] \times \R^3)}^2 \lesssim R^2 \|\partial_t \nabla  w\|_{L^2([0,t]\times B_R)}^2 + R^2 \|\nabla w(t,\cdot)\|_{L^2(B_R)}^2  + \|\nabla  w\|_{L^2([0,t] \times  B_R)}^2
+\end{align}
+Note that for the energy estimate, the Oseen term is easily dealt with since
+\begin{align*}
+    \int_{B_R^c} (V \cdot \nabla v) \cdot(v-w) =  \int_{B_R^c}  (V \cdot \nabla w) \cdot(v-w) -  \frac 1 2 \int_{\partial B_R} V \cdot n |v-w|^2 = \int_{B_R^c}  (V \cdot \nabla w) \cdot(v-w)
+\end{align*}
+because $v - w = \mathrm{const}$ on $\partial B_R$ and the RHS is estimated by terms that are already on the RHS of the energy estimate.
+
+To get pointwise estimates, we use the representation formula
+\begin{align} \label{repr.G}
+       v(t,x) &= \int_{B_R} G(0,x-y) \cdot  v(t,y) \dd y \\
+       &+  \int_0^t \int_{\partial B_R} \sigma[v(s,y)]n \cdot G(t-s,x-y) - \sigma[G(t-s, x-y)] n \cdot v(s,y) \dd y \dd s.
+\end{align}
+\rhcomment{The first term is surprising to me, do you spot a mistake in the derivation below? }\amcomment{The computation seems right, need to add the term coming from the time dependence of the particle $B_R$, which depends on $V_i$ $ \int_0^t \int_{\partial B_R} ( G(t-s,x-y) v (s,y))  n \cdot V_i $}
+Indeed, let $\bar G(s,y) =  G(t-s,x-y)$. Then we have, using that both $\bar G$ and $v$ are divergence free.
+\begin{align*}
+    0 &= \int_0^t \int_{B_R^c} ((-\partial_s - \Delta) \bar G - \nabla \bar P) \cdot v - \bar G \cdot ((\partial_s - \Delta) v + \nabla p) \dd y \dd s \\
+    &=  \int_{B_R^c}  \bar G(0,\cdot) \cdot v(0,\cdot)- \int_{\R^3}  \bar G(t,\cdot) \cdot v(t,\cdot) +  \int_{ B_R} \bar G(t,\cdot)  \cdot  v(t,\cdot)  \\
+    &+ \int_0^t \int_{\partial B_R} \sigma[v(s,y)]n \cdot \bar G(s,y) - \sigma[\bar G(s, y)] n \cdot v(s,y) \dd y \dd s
+\end{align*}
+The first RHS term vanishes because $v(0,\cdot) = 0$. The second RHS term is just $v(t,x)$ since $\bar G(t,\cdot) = P_\sigma \delta_x$, where $P_\sigma$ is the Helmholtz projection, and because $v(t,\cdot)$ is divergence free. Hence, we arrive at \eqref{repr.G}.
+
+
+
+As before, we take  $\psi(s,\cdot)$  a divergence free extension of $\bar G(s,\cdot) - \fint_{B_R} \bar G(s,\cdot)$ and get
+\begin{align*}
+     v(t,x) &=   \int_{B_R} G(0,x-y) \cdot  v(t,y) \dd y  \\
+     &+\int_0^t \int_{\R^3 \setminus B_R} \nabla v :  \nabla   \psi +  \int_0^t \int_{\R^3 \setminus B_R} (\Delta v -\nabla p) \cdot  \psi  +  \int_0^t \int_{B_R} (\Delta \bar G - \nabla P) \cdot v + \nabla \bar G : \nabla v \dd y \dd s
+\end{align*}
+For the third right-hand side term, we write
+\begin{align*}
+    \int_0^t \int_{\R^3 \setminus B_R} (\Delta v -\nabla p)  \cdot  \psi = - \int_0^t \int_{\R^3 \setminus B_R} \partial_t v \cdot  \psi &=  - \int_{\R^3 \setminus B_R}  v(t,\cdot) \cdot  \psi (t,\cdot) +  \int_0^t \int_{\R^3 \setminus B_R}  v \cdot  \partial_t \psi \\
+    & \leq \|v(t,\cdot)\|_{L^2(B_{2R})} \|\psi (t,\cdot)\|_2 + \|v\|_{L^2_t L^2_x(B_{2R})} \| \partial_t \psi\|_{L^2_{t,x}},
+\end{align*}
+where we used $\supp \psi \subset B_{2R}$. 
+Hence,  using Sobolev embedding to estimate $\|v\|_{L^1(B_R)} \lesssim R^{3/2} \|v\|_{L^2(B_{2R})} \lesssim R^{5/2} \|\nabla v\|_2$ and using the Poincar\'e inequality $\|\psi\|_2 \lesssim R \|\nabla \psi\|_2$ as well as linearity of the operator that maps $G(\cdot,  x - \cdot)$ to $\psi$ to see that it commutes with the time derivative, we obtain
+\begin{align} \label{v.pointwise}
+     |v(t,x)|  \lesssim &R^{3/2} \|\nabla v\|_{L^2_{t,x}} \left(\|\nabla G(\cdot,x-\cdot)\|_{L^2_s L^\infty_y(B_R)} + R \|\Delta G(\cdot,x-\cdot)\|_{L^2_s L^\infty_y(B_R)} + R^2\|\partial_t \nabla G(\cdot, x - \cdot)\|_{L^2_t L^\infty(B_R)}\right)
+     \\
+     &+ R^{3/2} \|v\|_{L^\infty_{t}L^2_x} \left( R\|\nabla G(0, x - \cdot)\|_{L^\infty(B_R)} + \| G(0, x - \cdot)\|_{L^\infty(B_R)} \right)
+\end{align}
+Inserting the decay estimates for $G$ we have
+\begin{align}
+    \|\nabla G(\cdot,x-\cdot)\|_{L^2_s L^\infty_y(B_R)} \lesssim \left(\int_0^{|x|^2} |x|^{-8} \dd s + \int_{|x|^2}^t s^{-4} \dd s \right)^{\frac 12 } &\lesssim  |x|^{-3}, \label{G.1} \\
+    \|\Delta G(\cdot,x-\cdot)\|_{L^2_s L^\infty_y(B_R)} &\lesssim |x|^{-4},   \label{G.2} \\
+    \|\partial_t \nabla G(\cdot, x - \cdot)\|_{L^2_t L^\infty(B_R)} &\lesssim |x|^{-5},  \label{G.3} \\
+    \|\nabla G(\cdot, x - \cdot)\|_{L^\infty_t L^\infty(B_R)} &\lesssim |x|^{-4} \label{G.4}
+\end{align}
+The singularity is one power worse than in the steady case. 
+\rhcomment{And surprisingly one power better for $|x| \gg 1$ (which is not interesting for us because typical particle distances are of order $1$). This seems to  contradict the long time behavior of $v$ which should be given by the solution to the steady problem in the case of time-independent $w$. Note however that the argument breaks down in this case since $ \|\nabla  w\|_{L^2([0,t] \times  B_R)}^2$ grows linearly in time...}
+The problem seems to be the $L^2$ norm in time. Indeed
+\begin{align*}
+    \|\nabla G(\cdot,x-\cdot)\|_{L^1_s L^\infty_y(B_R)} \lesssim |x|^{-2}, \\
+    \|\Delta G(\cdot,x-\cdot)\|_{L^1_s L^\infty_y(B_R)} \lesssim  |x|^{-3}
+\end{align*}
+(Note that the additonal $\Delta G$ is actually not a problem due to the additional factor $R$.)
+This means that we need an estimate for $\|\nabla v\|_{L^\infty_{t} L^2_x}$ instead of $\|\nabla v\|_{L^2_{t,x}}$. 
+This should be true since we expect the solution to be very regular in time provided that the data are regular in time.
+Indeed, taking the time derivative in the equation and performing the same energy estimates, we should get
+\begin{align} \label{partial_t.v.est}
+       & \|\partial_t v(t,\cdot)\|_{L^2(B_R^c)}^2  + \|\nabla  \partial_t v\|_{L^2([0,t] \times \R^3)}^2 \\
+       &\lesssim R^2 \|\nabla  \partial^2_t w\|_{L^2([0,t]\times B_R)}^2 + R^2 \|\nabla \partial_t w(t,\cdot)\|_{L^2(B_R)}^2  + \|\nabla  \partial_t w\|_{L^2([0,t] \times  B_R)}^2
+\end{align}
+ \am{Update Aug 26: what about instead of taking the derivative in time, we multiply by $\Delta v$? after removing the non vanishing boundary condition : if we set $\phi=v-R(w)$ with $R(w)$ an extension of $v_{|_{\partial B_R}}=w+rigid$ on a bigger ball such that $\phi=0$ on $\partial B_R$, we would have $\partial_t\phi-\Delta \phi+ \nabla p = \partial_t R(w) - \Delta R(w)$ on ${}^c B_R$  so that multiplying by $\Delta \phi$ we get thanks to the fact that the boundary term $\int_{\partial B_R} \sigma(\phi) n \partial_t \phi$ vanishes since $\partial_t \phi=0$ on $\partial B_R$
+ $$
+ \frac{1}{2}\
+\frac{d}{dt} \|\nabla \phi\|_{L^2({}^c B_R)}+ \|\Delta \phi \|_2 \lesssim \|\partial_t R(w) -\Delta R(w)\|_{L^2} 
+$$
+it seems to get slightly better decay estimates $ |\partial_t w |+ |\Delta w| \sim |x|^{-4}$ ?
+}
+By Sobolev embedding in time, we get a bound on $\|\nabla v\|_{L^\infty_{t} L^2_x}$. 
+There are two potential issues
+\begin{itemize}
+    \item In order to iterate the estimates in the method of reflections, this means that we need bounds on $|\nabla  \partial^2_t w(t,x)|$ etc. This looks rather dangerous because we expect each time derivative to count like two space derivatives and hence $|\nabla  \partial_t w(t,x)| \sim |x|^{-5}$. Note that in the original energy estimate \eqref{v.est}, this term is not dangerous because we can trade $R^2$ for $|x|^2$. But in  \eqref{partial_t.v.est} this seems bad.
+    \item Taking into account the Oseen term, there would be $\dot V_i$ appearing which might be hard to control.
+\end{itemize}
+
+
+\rh{Note that we know that $v$ solves
+    \begin{align}
+  \partial_t v  -  \Delta v + \nabla p = f , \quad \dv  v = 0 & \qquad  \text{in } [0,
+    T] \times  \R^3 
+\end{align}
+for some $f \in L^2(H^{-1})$ which is supported in $[0,T] \times B_R$. Assume that $f$ was supported in $B_R$ and is a dipole, i.e. 
+\begin{align}
+    \int_0^T \langle f, \varphi \rangle = 0
+\end{align}
+for all $\varphi \in L^2(H^1)$ such that $\varphi = \mathrm{const}$ in $B_R$,
+then, we could (at least formally) write
+\begin{align*}
+    v(t,x) = \int_0^t \langle f(s,\cdot), G(t-s,x-\cdot) \rangle \leq \|f\|_{L^\infty(H^{-1})} \|\bar G\|_{L^1(H^1)}
+\end{align*}
+for any $\bar G$ such that  $\nabla \bar G(s,y) = \nabla G(t-s, x-y) $ in $B_R$. 
+This leads to 
+\begin{align} \label{pointwise.f.infty}
+     |v(t,x)| \lesssim   \|f\|_{L^\infty(H^{-1})} \frac{R^{3/2}}{|x|^2}.
+\end{align}
+It then remains to show 
+\begin{align*}
+     \|f\|_{L^\infty(H^{-1})} \lesssim R^{3/2}.
+\end{align*}
+
+Note that unfortunately it is not so obvious that $f$ is a dipole.  Indeed, for $\varphi \in C_C^\infty((0,T)\times \R^3)$ (defining $ p = 0$ in $[0,T] \times B_R$ which I think we can do)
+\begin{align*}
+    \langle \partial_t v  -  \Delta v + \nabla p , \varphi \rangle  &= \int_{[0,T] \times \R^3} \sigma[v,p] : \nabla \varphi + \partial_t v \cdot \varphi \\
+    &= \int_{[0,T] \times \partial B_R} (\sigma[v,p]  n) \cdot  \varphi + \int_{B_R} \partial_t v \cdot  \varphi + \sigma[v,p] : \nabla \varphi .
+\end{align*}
+\rhcomment{Update May 29: I have added the last term. I don't understand why it should vanish. That one is also a dipole though (in the sense that if $\varphi = \mathrm{const}$ in $B_R$, it does not contribute.}
+The first term is a dipole but for the second one it is not so clear. One would need to show that
+\begin{align} \label{v_R=0}
+    \int_{B_R} v = 0.
+\end{align}
+Since $v = w + \mathrm{const}$.
+This seems unlikely since in the steady case we have
+\begin{align*}
+    \int_{\partial B_R} v = 0
+\end{align*}
+and we cannot have both in general since $v = w + \mathrm{const}$.
+Indeed, we can prove the same in the dynamic case at least for the heat equation: let $g \in C_c^\infty([0,T]$ and $\varphi$ the unique  solution to the backwards heat equation
+\begin{align*}
+    (-\partial_t - \Delta) \varphi = 0   & \qquad  \text{in } [0,
+    T] \times  \R^3 \setminus B_R(0), \\
+    n \cdot \nabla \varphi  = 1 &\qquad \text{on } \partial B_R,\\
+  \varphi(T,\cdot) = 0. & \qquad \text{in } B_R^c.
+\end{align*}
+Then, $\varphi$ is a radial function and hence 
+\begin{align*}
+    \int_0^T  g \int_{\partial B_R}  v  &= \int_0^T  \int_{\partial B_R} \nabla \varphi \cdot n v\\
+    &= \int_0^T  \int_{B_R^c} -\Delta \varphi  v + \nabla \varphi \cdot \nabla v \\
+    &=  \int_0^T  \int_{B_R^c} -\Delta \varphi  v  - \varphi \Delta v  + \int_0^T \int_{\partial B_R} \nabla v \cdot n \varphi\\
+    & = \int_0^T  \int_{B_R^c} \partial_t (\varphi  v) = 0.
+\end{align*}
+}
+
+\paragraph{Full problem.}
+
+One approach could be to get infomration on the fundamental solution of the full problem. 
+
+Another approach could be to somehow treat the Oseen term as a small perturbation. By scaling consdiderations, the Oseen term is negligible for $|x| \ll 1$. We could therefore hope to get estimates for $|x| \leq c$ for a sufficiently small $c$. For $|x| \geq c$ we should be able to get the estimates from the ones in $B_c$ (unfortunately, there is no maximum principle, but still...).
+
+\subsection{Quasistationary dipole approximation}
+
+Let's consider for simplicity the scalar problem 
+\begin{align}
+  \partial_t v  -  \Delta v  = 0 &\qquad  \text{in }  \R^3 \setminus B_R(0), \\
+    \nabla (v - w) = 0   & \qquad  \text{in }   B_R(0), \\
+    \int_{\partial B_R(0)}  \nabla v \cdot n = 0, \\
+            v(0,\cdot) = 0 & \qquad  \text{in }  \R^3.
+\end{align}
+If $w$ is sufficiently regular, we expect the leading order contribution of $v$ to be given by a dipole \enquote{potential}. More precisely, we make the ansatz
+\begin{align}
+    v \approx v^{dip} = H \ast_{t,x} \left(q(t) \cdot  n \mathcal H^2|_{\partial B_R}\right)
+\end{align}
+for some dipole charge $q \colon [0,T] \to \R$, i.e.
+\begin{align}
+    v^{dip}(t,x) = \int_0^t q(s) \cdot \int_{\partial B_R} H(t-s,  x-y)  n \dd y.
+\end{align}
+Since we expect that the time derivative contributes very little for $R \ll 1$, we expect that a good choice for $q(s)$ is through the corresponding steady problem, where 
+\begin{align} \label{dipole.q}
+    q(t) = 2 (\nabla w(t,\cdot))_{B_R} 
+\end{align}
+where $(\cdot)_{B_R}$ denotes the average on  $B_R$.
+Indeed, the solution to the problem 
+\begin{align}
+   \Delta z  = 0,  &\qquad  \text{in } \R^3 \setminus B_R(0), \\
+    \nabla z = (\nabla w)_{B_R}   & \qquad  \text{in }  B_R(0), \\
+    \int_{\partial B_R(0)}  \nabla z \cdot n = 0, &
+\end{align}
+is given by
+\begin{align*}
+    z(x) = \begin{cases} (\nabla w)_{B_R} \cdot x \qquad \text{in } B_R, \\
+    \frac{R^2 (\nabla w)_{B_R} \cdot x}{|x|^3}\qquad \text{in } \R^3 \setminus B_R.
+    \end{cases}
+\end{align*}
+which satisfies
+\begin{align*}
+    - \Delta z = [\nabla z \cdot n ] \mathcal H^2|_{\partial B_R}=  2 (\nabla w)_{B_R} \cdot n \mathcal H^2|_{\partial B_R}
+\end{align*}
+where $ [\nabla z \cdot n ]$ denotes the jump of the normal derivative.
+
+To check that $v^{dip}$ is a reasonable approximation, we compute for $x \in B_R$
+\begin{align*}
+    \nabla v^{dip}(t,x) &= \int_0^t q(s) \cdot \int_{\partial B_R} \nabla H(t-s,  x-y)  n \dd y \\
+    &=   \int_0^t q(s) \cdot \int_{B_R} \Delta H(t-s,  x-y)   \dd y \\
+    &=  \int_0^t q(s) \cdot \int_{B_R} \frac{\d}{\d s} (H(t-s,  x-y))  \dd y \\
+    &=  q(t) - q(0) \int_{B_R}  (H(t,  x-y))  \dd y - \int_0^t q'(s) \cdot \int_{B_R} (H(t-s,  x-y))  \dd y.
+\end{align*}
+We have $q(0) = 0$ since $w(0,\cdot) = 0$ and we estimate using that \eqref{G.est} also holds for $H$, as well as $\int_{\R^3} |H(t,x)| = 1$ for all $t > 0$,  
+\begin{align*}
+    \int_0^t q'(s) \cdot \int_{B_R} (H(t-s,  x-y))  \dd y \lesssim \|q'\|_\infty ( R^2 +  \int_{R^2}^t \int_{B_R}  s^{-3/2} \dd s \dd y) \lesssim R^2 \|q'\|_\infty.
+\end{align*}
+Hence, for all $x \in B_R$, inserting the choice of $q$ (up to a factor $2$ which I apparently missed somewhere)
+\begin{align*}
+    | \nabla v^{dip}(t,x) - (\nabla w)_{B_R}| \lesssim R^2 \left\|\frac{\d}{\d t}(\nabla w)_{B_R}\right\|_\infty.
+\end{align*}
+\rhcomment{Maybe better look at an implicit $q \colon [0,T] \to \R^3$ which has the property 
+\begin{align*}
+     \nabla v^{dip} = ( \nabla w)_{B_R}  \qquad \text{in}  [0,T] \times B_R.
+\end{align*}
+(Maybe one has to redefine $v^{dip}$ to be constant in $B_R$, at the moment we only know this for $\partial B_R$.)
+}
+This quasisteady dipole approximation inherits the nice decay properties from the fully steady problem. Indeed, for $|x| \geq 2R$
+\begin{align*}
+    |v^{dip}(t,x)| &= \left|\int_0^t q(s) \cdot \int_{\partial B_R} (H(t-s,  x-y) - (H(t-s,x-\cdot))_{B_R})   n \dd y\right|\\
+    & \lesssim \|q\|_\infty R^3 \|\nabla H\|_{L^1_t L^\infty(B_R(x))} \\
+    &\lesssim \|\nabla w\|_{L^\infty_t L^\infty_x(B_R)} \frac{R^3}{|x|^2},
+\end{align*}
+and similarly for all derivatives.
+
+
+To estimate the remainder we can apply all the considerations in the \enquote{Case of the transient Stokes} paragraph to $ v^{diff} := v- v^{dip}$. Note that $ v^{diff}$ solves
+\begin{align}
+  \partial_t v^{diff}  -  \Delta v^{diff}  = 0 &\qquad  \text{in }  \R^3 \setminus B_R(0), \\
+    \nabla (v^{diff} -  w^{diff}) = 0   & \qquad  \text{in }   B_R(0), \\
+    \int_{\partial B_R(0)}  \nabla v^{diff} \cdot n = 0, \\
+            v^{diff}(0,\cdot) = 0 & \qquad  \text{in }  \R^3
+\end{align}
+with $w^{diff} = w - v^{dip}$. Hence, we can indeed apply all these estimates. In particular, \eqref{v.est} reads 
+\begin{align} \label{v.est}
+        &\|v^{diff}(t,\cdot)\|_{L^2(B_R^c)}^2  + \|\nabla  v^{diff}\|_{L^2([0,t] \times \R^3)}^2 \\
+        &\lesssim R^2 \|\partial_t \nabla  w^{diff}\|_{L^2([0,t]\times B_R)}^2 + R^2 \|\nabla w^{diff}(t,\cdot)\|_{L^2(B_R)}^2  + \|\nabla  w^{diff}\|_{L^2([0,t] \times  B_R)}^2 \\
+        &=: \|w^{diff}\|_X^2
+\end{align}
+such that \eqref{v.pointwise} together with \eqref{G.1}--\eqref{G.4} becomes 
+\begin{align*}
+        |v^{dif}(t,x)|  \lesssim & \frac{R^{3/2}}{|x|^{3}} \|w^{diff}\|_X.
+\end{align*}
+Unfortunately, this does not seem sufficient: Indeed, for smooth $w^{diff}$
+\begin{align*}
+    \|w^{diff}\|_X \gtrsim R^{5/2} \|\nabla^2 w\|_{L^\infty_t L^\infty(B_R)}
+\end{align*}
+yielding at best
+\begin{align*}
+     |v^{dif}(t,x)| \lesssim \frac{R^{4}}{|x|^{3}}  \|\nabla^2 w\|_{L^\infty_t L^\infty(B_R)}
+\end{align*}
+and 
+\begin{align*}
+     |\nabla^k v^{dif}(t,x)| \lesssim \frac{R^{4}}{|x|^{3+k}}  \|\nabla^2 w\|_{L^\infty_t L^\infty(B_R)}
+\end{align*}
+In the method of reflections we would need to iterate bounds on $\|\nabla^2 v_k\|_{L^\infty_t L^\infty(\cup_i B_i)}$
+by 
+\begin{align*}
+    \|\nabla^2 v_{k+1}\|_{L^\infty_t (\cup_i B_i)} \leq \sup_i \sum_{j \neq i} \|\nabla Q_j v_k\|_{L^\infty_t L^\infty(B_i)} \\
+    & \lesssim \sup_i \sum_{j \neq i} \frac{R^{4}}{|x|^{-5}}  \|\nabla^2 v_k\|_{L^\infty_t L^\infty(B_j)} \\
+    & \lesssim R^4 \dmin^{-5}  \|\nabla^2 v_k\|_{L^\infty_t L^\infty(\cup_i B_i)}
+\end{align*}
+So compared to the estimate in the paragraph \enquote{Case of the transient Stokes}, we have gained a factor $R/{\dmin}$ but this is not enough to reach any $R \gg \dmin \sim N^{-1/3}$ as in the steady case.
+
+However, what happens if we do the full multipole expansion? Probably this gets super ugly since we get arbitrary high derivatives and need to track how constants depends on the order of the derivatives...
+
+\subsection{Full quasistationary approximation}
+
+We pursue a similar strategy as above but use the full quasistatic force/charge.
+
+More precisely, we first solve for each $t \in [0,T]$ the quasistationary problem
+\begin{align}
+   -\Delta v^{q}  = 0 &\qquad  \text{in }  \R^3 \setminus B_R(0), \\
+    \nabla (v^{q} - w(t,\cdot)) = 0   & \qquad  \text{in }   B_R(0), \\
+    \int_{\partial B_R(0)}  \nabla v^{q} \cdot n = 0.
+\end{align}
+We define the corresponding charge density
+\begin{align}
+    f^q := - \Delta v^q,
+\end{align}
+and then define the approximation $ v^{app}$ for the solution to the full problem $v$ through
+\begin{align}
+   \partial_t  v^{app} - \Delta v^{app} = f^q &\quad \text{in } [0,T] \times \R^3, \\
+   v^{app}(0,\cdot) = 0 & \quad \text{in } \R^3.
+\end{align}
+The idea is that close to $B_R$ the time derivative counts much less than $\Delta$ (by a factor $R^2$). Hence, we can expect $v^q$ to be a good approximation of $v$ \emph{close} to $B_R$, but not far from it. 
+However the charge distribution of $v$ only depends on the behavior of $v$ close to $B_R$, and hence $v^{app}$ should be a good approximation for $v$ everywhere.
+
+\paragraph{Estimating $v^q - v^{app}$ close to $B_R$:}
+\rhcomment{Maybe there is a nice way to do  this through energy estimates. For the moment let's to brute force via the fundamental solution.}
+
+Let $v^d := v^q - v^{app}$. Then 
+\begin{align*}
+    (\partial_t - \Delta)v^d = \partial_t v^q & \quad \text{in } [0,T] \times \R^3, \\
+       v(0,\cdot) = 0 & \quad \text{in } \R^3.
+\end{align*}
+Moreover, we have the estimate
+\begin{align*}
+    |\partial_t \nabla^k v^q(t,x)| \lesssim \frac{R^3}{R^{2+k} +|x|^{2+k}} \|\partial_t \nabla w\|_{L^\infty(B_R)}
+\end{align*}
+for $k = 0,1$ and all $(t,x)$. (This is true also in the Stokes case by the max modulus estimate).
+Hence, we can estimate
+\begin{align*}
+    |\nabla v^d(t,x)| &\leq \int_0^t \int_{\R^3} |G(t-s,x-y)| |\partial_t \nabla v^q(s,y)| \dd y \dd s \\
+    & \lesssim R^3 \|\partial_t \nabla w\|_{L^\infty_t L^\infty(B_R)} \int_0^t \int_{\R^3} \min\{(t-s)^{-3/2}, |x-y|^{-3}\} \frac{1}{R^{3} +|y|^{3}}\dd y \dd s \\
+    &=R^3 \|\partial_t \nabla w\|_{L^\infty_t L^\infty(B_R)} \int_0^t \int_{\R^3} \min\{(s)^{-3/2}, |x-y|^{-3}\} \frac{1}{R^{3} +|y|^{3}}\dd y \dd s.
+\end{align*}
+The integral is clearly maximal for $|x| = 0$. We therefore fix $x=0$ and split the time integral 
+\begin{align*}
+\int_0^{R^2} \int_{\R^3} \min\{s^{-3/2}, |y|^{-3}\} \frac{1}{R^{3} +|y|^{3}}\dd y \dd s & = \int_0^{R^2} \int_{B_{\sqrt s}} s^{-3/2}   \frac{1}{R^{3}} \dd y + \int_{B_{\sqrt s}^c}|y|^{-3}  \frac{1}{R^{3} + y^3} \dd y \dd s\\
+&\lesssim \int_0^{R^2} \frac{1}{R^{3}} (1+\log(R/\sqrt s)) \dd s \\
+& \lesssim \frac 1 R (1+ |\log R|).
+\end{align*}
+Similarly, 
+\begin{align*}
+\int_{R^2}^{t} \int_{\R^3} \min\{s^{-3/2}, |y|^{-3}\} \frac{1}{R^{3} +|y|^{3}}\dd y \dd s & = \int_{R^2}^{t} \int_{B_{\sqrt s}} s^{-3/2}   \frac{1}{R^{3} + |y|^3} \dd y + \int_{B_{\sqrt s}^c}|y|^{-3}  \frac{1}{y^3} \dd y \dd s\\
+&\lesssim \int_{R^2}^{t} s^{-3/2} (1+\log(R/\sqrt s)) \dd s \\
+& \lesssim \frac 1 R (1+ |\log R|).
+\end{align*}
+Hence, we arrive at 
+\begin{align*}
+    \|\nabla v^d\|_{L^\infty_{t,x}} \lesssim  R^2  (1+ |\log R|) \|\partial_t \nabla w\|_{L^\infty_t L^\infty(B_R)}
+\end{align*}
+
+Now we could try to estimate estimate $v - v^{app}$ using the tools developed before. However, similarly as in the previous subsection, we only seem to gain a factor $R^2/|x|^2$ in the decay estimate. 
+Hence, in order to gain more, we need to iterate. 
+
+We define iteratively $v^q_k$, $v^{app}_k$ and $v^d_k = v^q_k - v^{app}_k$ through $v^q_0 = v^q$,  $v^{app}_0 = v^{app}$ and
+\begin{align}
+   -\Delta v^{q}_{k+1}  = 0 &\qquad  \text{in }  \R^3 \setminus B_R(0), \\
+    \nabla (v^{q}_{k+1} +  v^{d}_{k}) = 0   & \qquad  \text{in }   B_R(0), \\
+    \int_{\partial B_R(0)}  \nabla v^{q}_{k+1} \cdot n = 0.
+\end{align}
+and
+\begin{align}
+   \partial_t  v^{app}_{k+1} - \Delta v^{app}_{k+1} = -\Delta v^q_{k+1} &\quad \text{in } [0,T] \times \R^3, \\
+   v^{app}_{k+1}(0,\cdot) = 0 & \quad \text{in } \R^3.
+\end{align}
+Then,  in $B_R$ we have
+\begin{align} \label{bar.v.B_R}
+   \sum_{k=0}^n \nabla v_{k}^{app} = \sum_{k=0}^n  \nabla (v_{k}^d +   v_k^q) = \nabla w  + v_{0}^d + \sum_{k=1}^n  \nabla (v_{k}^d -  v_{k-1}^q) = \nabla w + \nabla v_{n}^d.
+\end{align}
+By the arguments above, for any $l \in \N$ 
+\begin{align*}
+    \|\partial_t^l \nabla v^{d}_{k+1}\|_{L^\infty_{t,x}} \lesssim R^2 (1+ |\log R|) \|\partial_t^{l+1} \nabla  v^{d}_{k}\|_{L^\infty_t L^\infty(B_R)} 
+\end{align*}
+and hence inductively
+\begin{align*}
+    \|\nabla v^{d}_{k}\|_{L^\infty_{t,x}}  \lesssim \left(R^{2} (1+ |\log R|)\right)^{1+k}  \|\partial_t^{k+1} \nabla w\|_{L^\infty_t L^\infty(B_R)}.
+\end{align*}
+and similarly
+\begin{align*}
+    \|\nabla v^q_k\|_{L^\infty_{t,x}} \lesssim \left(R^{2} (1+ |\log R|)\right)^{k}  \|\partial_t^{k} \nabla w\|_{L^\infty_t L^\infty(B_R)}
+\end{align*}
+Assume
+\begin{align}
+   \sum_{k \in \N} \left(R^{2} (1+ |\log R|)\right)^{k}  \|\partial_t^{k} \nabla w\|_{L^\infty_t L^\infty(B_R)} =: \|w\|_{X(B_R)} < \infty.
+\end{align}
+Then $\bar v:= \sum_{k+1}^\infty v^{app}$ exists in  $W^{1,\infty}_{t,x}$ (up to providing also estimates for the function and not only the gradient which is okay).
+Moreover, $\nabla \bar v = \nabla w$ in $B_R$ thanks to \eqref{bar.v.B_R}. Moreover, $\bar v$ solves the heat equation outside of $B_R$. Hence, $\bar v = v$ provided
+\begin{align} \label{v.bar.force}
+    \int_{\partial B_R} n \cdot \nabla \bar v = 0.
+\end{align}
+\rh{This does not seem to be true!!!}\\
+Indeed, the argument around \eqref{v_R=0} suggests that $v$ does not solve the heat equation with a dipole source but $\bar v$ does by its definition.
+However, the difference could be managable. Indeed, by the argument after $\eqref{v_R=0}$, we know that \eqref{v.bar.force} is equivalent to $\fint_{\partial B_R} \bar v = 0$. 
+Since $\fint_{\partial B^R} v_k^q = 0$ for all $k$, we can expect something like have
+\begin{align*}
+    \fint_{\partial B_R} \bar v =  \sum_{k = 0}^\infty \fint_{B_R}  v_k^d + v_k^q =  \sum_{k = 0}^\infty \fint_{B_R}  v_k^d \leq  \sum_{k = 0}^\infty  \left(R^{3} (1+ |\log R|)\right)\left(R^{2} (1+ |\log R|)\right)^{k}\|\partial_t^{k+1} \nabla w\|_{L^\infty_t L^\infty(B_R)} 
+\end{align*}
+where the $3$ instaead of the $2$ arises because we are estimating the function instead of its derivative. The right-hand side should be very small (at least $\lesssim R$)...
+
+Pretending that $\bar v = v$, we know that
+\begin{align*}
+    \partial_t v - \Delta v = \sum_{k=0}^\infty -\Delta v_k^q.
+\end{align*}
+and
+\begin{align*}
+    \|\sum_{k=0}^\infty -\Delta v_k^q\|_{L^\infty_t H^{-1}_x} &\leq \sum_{k=0}^\infty \|\nabla v^q_k\|_{L^\infty_t  L^2_{x}} \\
+    & \lesssim R^{3/2} \|\nabla w\|_{L^\infty_t L^\infty(B_R)}+ R^{3/2} \sum_{k=1}^\infty \|\nabla v^d_{k-1}\|_{L^\infty_t L^\infty(B_R)} \\
+    & \lesssim R^{3/2} \sum_{k=0}^\infty  \left(R^{2} (1+ |\log R|)\right)^{k} \|\partial_t^{k} \nabla w\|_{L^\infty_t L^\infty(B_R)}\\
+    & \lesssim R^{3/2} \|w\|_{X(B_R)}.
+\end{align*}
+
+Hence, by \eqref{pointwise.f.infty} and its generalization to derivatives, we get
+\begin{align*}
+    |\partial_t^k \nabla v(t,x)| \leq C_k \frac{R^3}{|x|^{3+2k}} \|w\|_{X(B_R)},
+\end{align*}
+where $C_k$ is a constant that depends on the coefficients of the derivatives of $G$.
+This would be great for the method of reflections. Indeed, assuming that for some  $\theta < 1$
+\begin{align*}
+     C_{k+1} \leq \theta C_k  \frac{R^{2} (1+ |\log R|)}{\dmin^2} 
+\end{align*}
+which is fine if $C_k$ grows at most exponentially, then
+\begin{align*}
+     \|v\|_{X(B_R(x)} \leq  \sum_{k=0}^N C_k \left(R^{2} (1+ |\log R|)\right)^{k}  \frac{R^3}{|x|^{3+2k}} \|w\|_{X(B_R)}
+     & \leq  \sum_{k=0}^N \eps^k \frac{R^3}{|x|^{3}} \|w\|_{X(B_R)} \lesssim \frac{R^3}{|x|^{3}} \|w\|_{X(B_R)}
+\end{align*}
+This implies (with the notation from \eqref{v_k+1})
+that
+\begin{align*}
+    \sup_{i} \|v_{k+1}\|_{X(B_i)} \leq R^3 S_3  \sup_{i} \|v_{k}\|_{X(B_i)}
+\end{align*}
+and hence the method of reflections converges under (almost) the same conditions as in the static case.
+
+In order to fix the issue that \eqref{v.bar.force} does not hold, we simply solve
+\begin{align*}
+    (\partial_t - \Delta)v^c = 0 &\quad \text{in } [0,T] \times \R^3 \setminus B_R, \\
+    v^c = \fint_{\partial B_R} \bar v  &\quad \text{in } [0,T] \times B_R.
+\end{align*}
+Then, we have $\bar v - v^c = v$ because     $\nabla v^c = 0 $ in $B_R$ and $\fint_{\partial B_R} \bar v - v^c = 0$, thus $\bar v - v^c$ is force free.
+The function $v^c$ is radial, i.e. $v^c(t,x) = v^c(t,|x|)$ and $h(t,r) := r v^c(t,r)$, solves the $1d$ heat equation, i.e.
+\begin{align*}
+    (\partial_t - \partial_{rr}) h = 0 \quad \text{in } [0,T] \times [R,\infty), \\
+    h(t,R) = Rg(t).
+\end{align*}
+One explicitely solves via the heat Poisson kernel \rh{(chatgpt!)}, i.e.
+\begin{align*}
+    h(t,r) = \int_0^t R g(s) K(t-s,r-R) \dd s, 
+\end{align*}
+where 
+\begin{align}
+    K(t,r) = \frac{r\exp(\frac{-r^2}{4t})}{2 \sqrt \pi t^{3/2}}.
+\end{align}
+
+
+
+% \begin{align}
+%   \partial_t  v^{app}_{k+1} - \Delta v^{app}_{k+1} = -\Delta v^q_{k+1} + g_{k+1} \1_{B_R} &\quad \text{in } [0,T] \times \R^3, \\
+%   v^{app}_{k+1}(0,\cdot) = 0 & \quad \text{in } \R^3.
+% \end{align}
+% where $g_{k+1} = g_{k+1}(t)$ is chosen such that $\fint_{\partial B_R} v^{app}_k = 0$. Then $v^{app}_k$ satisfies \eqref{v.bar.force}. Note that the addition of $g_k$ only changes $v^app_k$ by a radial function. This still affects $\nabla v^{app}_k|_{B_R}$ but we can  hope that the correction is very small such that the convergence still holds.
+% Determining $g_k$ means that we need to invert the operator $ g \mapsto h$, 
+% \begin{align*}
+%     \int_0^t j(t-s) g(s) = h(t),
+% \end{align*}
+% where 
+% \begin{align}
+%     j(t) = \int_{B_R} G(t,y) \dd y.
+% \end{align}
+
+\printbibliography
+
+\end{document}

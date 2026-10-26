@@ -1,0 +1,239 @@
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[english]{babel}
+\usepackage{csquotes}
+\usepackage{stmaryrd}
+\usepackage{amsthm, amssymb, amsmath, amsfonts, mathrsfs, dsfont, esint, textcomp}
+\usepackage[colorlinks=true, pdfstartview=FitV, linkcolor=blue, citecolor=blue, urlcolor=blue,pagebackref=false]{hyperref}
+\usepackage{mathtools}
+\usepackage[shortlabels]{enumitem}
+
+% \usepackage{dutchcal}
+
+
+\usepackage[backend=biber,giveninits,maxnames=4,maxalphanames=5, style=alphabetic,isbn=false, date=year, doi=false, epr= true, url= false, sorting=ynt, sortcites = true]{biblatex}
+
+ \usepackage{authblk}
+  \renewcommand*{\Affilfont}{\normalsize \itshape}
+
+
+  
+ \setkomafont{date}{\large}
+
+
+ \addtokomafont{disposition}{\rmfamily}
+
+
+
+
+
+ \renewcommand{\arraystretch}{1.4}
+ \arraycolsep=1.4pt
+
+\widowpenalty10000
+\clubpenalty10000
+
+\usepackage{microtype}
+
+\usepackage[notcite,notref,color]{showkeys}
+\definecolor{labelkey}{gray}{.8}
+\definecolor{refkey}{gray}{.8}
+
+\definecolor{darkblue}{rgb}{0,0,0.7} 
+\definecolor{darkred}{rgb}{0.9,0.1,0.1}
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+
+\def\comment#1{\marginpar{\raggedright\scriptsize{\textcolor{darkred}{#1}}}}
+\def\newpar{\vspace{0.3em}\noindent}
+
+%%%%%%
+%großer Richard
+\newcommand{\rscomment}[1]{{\color{darkblue}{~\linebreak
+\noindent+++++++++++++++++++\\
+{#1}\\
++++++++++++++++++++
+\linebreak}}}
+
+\newcommand{\rs}[1]{{\color{darkblue}{#1}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%kleiner Richard
+\newcommand{\rhcomment}[1]{{\color{darkgreen}{~\linebreak
+\noindent+++++++++++++++++++\\
+{#1}\\
++++++++++++++++++++
+\linebreak}}}
+
+\newcommand{\rh}[1]{{\color{darkgreen}{#1}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\amcomment}[1]{{\color{darkred}{~\linebreak
+\noindent+++++++++++++++++++\\
+{#1}\\
++++++++++++++++++++
+\linebreak}}}
+
+\newcommand{\am}[1]{{\color{darkred}{#1}}}
+\renewenvironment{proof}[1][\smallskip\noindent\proofname]{{\smallskip\noindent\bfseries #1. }}{\qed \medskip}
+
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{theorem}[thm]{Theorem}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+% \theoremstyle{remark}
+\theoremstyle{definition}
+\newtheorem{defi}[thm]{Definition}
+\newtheorem{rem}[thm]{Remark}
+
+\newcommand\norm[1]{\left\lVert#1\right\rVert}
+\newcommand\set[1]{\left\{#1\right\}}
+\newcommand\bra[1]{\left({#1}\right)}
+\newcommand\sca[1]{\left\langle{#1}\right\rangle}
+\newcommand\abs[1]{\left\lvert#1\right\rvert}
+
+\newcommand{\blue}{\color{blue}}
+\renewcommand{\le}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+\newcommand{\ls}{\lesssim}
+\newcommand{\gs}{\gtrsim}
+\renewcommand{\subset}{\subseteq}
+\newcommand{\mcl}{\mathcal}
+\newcommand{\msf}{\mathsf}
+\newcommand{\msc}{\mathscr}
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\B}{\mathbb{B}}
+\newcommand{\e}{\mathbf{e}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\cH}{\mathcal{H}}
+\newcommand{\mH}{\mathcal{H}}
+\newcommand{\J}{\mathcal{J}}
+\newcommand{\fP}{\mathcal{P}}
+\newcommand{\mP}{\mathcal{P}}
+\newcommand{\EE}{\mathbf{E}}
+\newcommand{\cE}{\mathcal{E}}
+\newcommand{\expec}[1]{\left\langle #1 \right\rangle}
+\newcommand{\Gh}{G_{\mathsf{h}}}
+\newcommand{\cGh}{\mathcal{G}_{\mathsf{h}}}
+\newcommand{\Ah}{A_{\mathsf{h}}}
+\newcommand{\ah}{a_{\mathsf{h}}}
+\newcommand{\Ahi}{A_{\mathsf{h},i}}
+\newcommand{\uh}{u_{\mathsf{h}}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\V}{\mathcal{V}}
+\renewcommand{\L}{\mathscr{L}}
+\newcommand{\K}{\mathcal{K}}
+\newcommand{\xm}{_{\xi,\tau}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\na}{\nabla}
+\newcommand{\Ll}{\left}
+\newcommand{\Rr}{\right}
+\newcommand{\lhs}{left-hand side}
+\newcommand{\rhs}{right-hand side}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\mX}{\mathcal{X}}
+\newcommand{\mD}{\mathcal{D}}
+\newcommand{\mY}{\mathcal{Y}}
+\newcommand{\mV}{\mathcal{V}}
+\newcommand{\z}{^{\circ}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\PP}{\mathbf{P}}
+\newcommand{\Qx}{\mathsf{Q}^{(\xi)}}
+\newcommand{\Qxe}{\mathsf{Q}^{(\xi,e)}}
+\newcommand{\ov}{\overline}
+\newcommand{\un}{\underline}
+\newcommand{\td}{\tilde}
+\newcommand{\eps}{\varepsilon}
+\renewcommand{\d}{{\mathrm{d}}}
+\newcommand{\mclN}{\mathcal{N}}
+\newcommand{\nn}{nn}
+\newcommand{\var}{\mathbb{V}\mathrm{ar}}
+\newcommand{\mfk}{\mathfrak}
+\newcommand{\dr}{\partial}
+\renewcommand{\o}{\omega}
+\newcommand{\on}{[\un{\o}]_n}
+\renewcommand{\O}{\mathcal{O}}
+\newcommand{\tp}{^{(\td{p})}}
+\newcommand{\T}{\mathbb{T}}
+\renewcommand{\div}{\mathop{\rm div}}
+\newcommand{\oh}{\frac 1 2}
+\newcommand{\M}{\mathbb{M}}
+\newcommand{\MM}{\mathscr{M}_q}
+\newcommand{\MMt}{\mathscr{M}_{q,t}}
+\newcommand{\Ma}{\mathsf{M}}
+\newcommand{\mi}{\mathsf{m}\,}
+\renewcommand{\t}{^{(t)}}
+\newcommand{\red}{\color{red}}
+\newcommand{\bseta}{{\boldsymbol\eta}}
+\newcommand{\aeps}{\eps^\frac{d}{d-2}}
+\newcommand{\dd}{\, \mathrm{d}}
+\newcommand{\wto}{\rightharpoonup}
+\newcommand{\Rd}{\R^d}
+\newcommand{\Zd}{\Z^d}
+\newcommand{\eff}{\mathrm{eff}}
+\newcommand{\ext}{\mathrm{ext}}
+\newcommand{\clos}[1]{\overline{#1}}
+\newcommand{\sol}{\mathrm{sol}}
+\newcommand{\pot}{\mathrm{pot}}
+\newcommand{\loc}{\mathrm{loc}}
+\newcommand{\app}{\mathrm{app}}
+\DeclareMathOperator{\St}{\mathrm{St}}
+\DeclareMathOperator{\Br}{\mathrm{Br}}
+\newcommand{\W}{\mathcal{W}}
+\newcommand{\dmin}{d_{\mathrm{min}}}
+\newcommand{\dminone}{d_{\mathrm{min,1}}}
+\newcommand{\sint}{\strokedint}
+
+\newcommand{\brho}{\bar \rho_N}
+\newcommand{\bX}{\bar X_N}
+\newcommand{\mR}{\mathcal R}
+\newcommand{\bdmin}{\bar d_{\mathrm{min}}}
+\newcommand{\fru}{\mathfrak{u}}
+\newcommand{\frp}{\mathfrak{p}}
+\newcommand{\m}{\mathcal}
+\newcommand{\mf}{\mathfrak}
+\newcommand{\vr}{\varrho}
+\renewcommand{\varrho}{\rho}
+
+\DeclareMathOperator{\Err}{Err}
+\DeclareMathOperator{\Sym}{Sym}
+\DeclareMathOperator*{\esssup}{esssup}
+\DeclareMathOperator{\curl}{curl}
+\DeclareMathOperator{\Skew}{Skew}
+\DeclareMathOperator{\Id}{Id}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\dv}{div}
+\DeclareMathOperator*{\Capacity}{Cap}
+\DeclareMathOperator*{\supp}{supp}
+\DeclareMathOperator*{\osc}{Osc}
+\DeclareMathOperator{\arsinh}{arsinh}
+\DeclareMathOperator{\ent}{\msf{Ent}}
+\DeclareMathOperator{\Bog}{Bog}
+\DeclareMathOperator{\dist}{dist}
+\DeclareMathOperator{\op}{op}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\cof}{cof}
+\DeclareMathOperator{\diff}{diff}
+
+\numberwithin{equation}{section}
+%\renewcommand{\theequation}{\thesection .\arabic{equation}}
+
+\mathtoolsset{showonlyrefs}
+
+\setcounter{secnumdepth}{2}
+
+\bibliography{bib.bib}
+
+
+
+
