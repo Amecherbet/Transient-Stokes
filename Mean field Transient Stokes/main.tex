@@ -11,7 +11,6 @@
 \date{April 2026}
 
 
-
 \begin{document}
 
 \maketitle
@@ -74,7 +73,8 @@ Using $\varphi=u$ as a test funtion we obtain the energy relation
     \frac 12\frac{\d}{\d t} \int_{\R^3} \abs{u(t)}^2\dd x+\int_{\R^3} \abs{\nabla u}^2\dd x+\sum_i F_i \cdot V_i=0.
 \end{align*}
 
-We want to estimate the last term (linear in $u$), absorb the $u$ dependence and show (at most) linear growth of the energy. We can do this by using the trace following estimate 
+We want to estimate the last term (linear in $u$), absorb the $u$ dependence and show (at most) linear growth of the energy. 
+We can do this by using the trace following estimate 
 \begin{align*}
     \frac{1}{R^2 N}\norm{u}_{L^2(\partial \Omega)}^2\le C \norm{u}^2_{L^2(\Omega)} + \frac{C}{NR} \norm{\nabla u}_{L^2(\Omega)}^2
 \end{align*}
@@ -90,6 +90,8 @@ Then, assuming $NR \gtrsim 1$ (which is the interesting regime)
 \end{align*}
 
 Based on this energy estimate it should be possible to establish well-posedness (under the assumption that the particles stay well-separated) by transforming the equation back to a time-independent domain and using a Galerkin approximation.
+
+\am{it seems to me that this yields an exponential growth (and not linear) because of the $\int_0^t\norm{ u}^2_{L^2}$ appearing above}
 
 \section{The fundamental solution}
 
@@ -364,12 +366,11 @@ Indeed, taking the time derivative in the equation and performing the same energ
        & \|\partial_t v(t,\cdot)\|_{L^2(B_R^c)}^2  + \|\nabla  \partial_t v\|_{L^2([0,t] \times \R^3)}^2 \\
        &\lesssim R^2 \|\nabla  \partial^2_t w\|_{L^2([0,t]\times B_R)}^2 + R^2 \|\nabla \partial_t w(t,\cdot)\|_{L^2(B_R)}^2  + \|\nabla  \partial_t w\|_{L^2([0,t] \times  B_R)}^2
 \end{align}
- \am{Update Aug 26: what about instead of taking the derivative in time, we multiply by $\Delta v$? after removing the non vanishing boundary condition : if we set $\phi=v-R(w)$ with $R(w)$ an extension of $v_{|_{\partial B_R}}=w+rigid$ on a bigger ball such that $\phi=0$ on $\partial B_R$, we would have $\partial_t\phi-\Delta \phi+ \nabla p = \partial_t R(w) - \Delta R(w)$ on ${}^c B_R$  so that multiplying by $\Delta \phi$ we get thanks to the fact that the boundary term $\int_{\partial B_R} \sigma(\phi) n \partial_t \phi$ vanishes since $\partial_t \phi=0$ on $\partial B_R$
+ \am{Update Oct 26: what about instead of taking the derivative in time, we multiply by $\Delta v$?  we should get using that $\nabla v= \nabla w$ on $B_i$
  $$
- \frac{1}{2}\
-\frac{d}{dt} \|\nabla \phi\|_{L^2({}^c B_R)}+ \|\Delta \phi \|_2 \lesssim \|\partial_t R(w) -\Delta R(w)\|_{L^2} 
-$$
-it seems to get slightly better decay estimates $ |\partial_t w |+ |\Delta w| \sim |x|^{-4}$ ?
+ \frac{1}{2}\frac{d}{dt} \int_{\R^3\setminus  B_R}|\nabla v|^2 + \int_{\R^3 \setminus  B_R}|\Delta v|^2 = \pm  \int_{\partial B_R} \partial_t v \nabla w \cdot n + \int_{\partial B_R} |\nabla w|^2 V_i \cdot n + \int_{\partial B_R}p \Delta v \cdot n 
+ $$
+ the term coming from the pressure is surprising, we should expect to get a control on that as well...?
 }
 By Sobolev embedding in time, we get a bound on $\|\nabla v\|_{L^\infty_{t} L^2_x}$. 
 There are two potential issues
